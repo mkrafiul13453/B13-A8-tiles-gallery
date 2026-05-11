@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "@heroui/react";
 import { FiArrowRight } from "react-icons/fi";
+import Link from "next/link";
 
 const Banner = () => {
     return (
@@ -28,9 +29,9 @@ const Banner = () => {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <Button className="text-xl font-bold text-white" variant="outline">
+                    <Link href={"/all-tiles"}><Button className="text-xl font-bold text-white" variant="outline">
                         Browse Now
-                    </Button>
+                    </Button></Link>
                 </div>
             </div>
         </section>
