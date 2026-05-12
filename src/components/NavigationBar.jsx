@@ -1,5 +1,7 @@
 "use client";
 
+import { authClient } from "@/app/lib/auth-client";
+import { Avatar, Button } from "@heroui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -7,6 +9,14 @@ import { FaBars, FaTimes } from "react-icons/fa";
 
 
 const Navbar = () => {
+    const userData = authClient.useSession();
+    const user = userData.data?.user;
+    console.log(user);
+
+    const handelSignOut = async () => {
+        await authClient.signOut();
+    }
+
     const [menuOpen, setMenuOpen] = useState(false);
 
     return (
@@ -17,7 +27,7 @@ const Navbar = () => {
 
                     <Link href="/" className="flex items-center gap-2">
                         <Image
-                         src={"/tiles.jpg"}
+                            src={"/tiles.jpg"}
                             alt="logo"
                             loading="eager"
                             width={50}
@@ -52,17 +62,29 @@ const Navbar = () => {
                     </div>
 
                     <div className="hidden md:flex items-center gap-3">
-                        <Link href="/signup">
-                            <button className="px-5 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition">
-                                Sign Up
-                            </button>
-                        </Link>
+                        {!user && <div>
+                            <Link href="/signup">
+                                <button className="px-5 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition">
+                                    Sign Up
+                                </button>
+                            </Link>
 
-                        <Link href="/login">
-                            <button className="px-5 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition">
-                                Login
-                            </button>
-                        </Link>
+                            <Link href="/login">
+                                <button className="px-5 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition">
+                                    Login
+                                </button>
+                            </Link>
+                        </div>}
+                        {user &&
+                            <div className="flex justify-between gap-2">
+                                <Avatar size="md">
+                                    <Avatar.Image alt="John Doe" src={user?.image} referrerPolicy="no-referrer" />
+                                    <Avatar.Fallback>JD</Avatar.Fallback>
+                                </Avatar>
+                                <Button onClick={handelSignOut} variant="danger">Logout</Button>
+                            </div>
+                        }
+
                     </div>
 
                     <button
@@ -102,18 +124,29 @@ const Navbar = () => {
                             </Link>
                         </div>
 
-                        <div className="flex flex-col gap-3 pt-3">
-                            <Link href="/signup">
-                                <button className="w-full px-5 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition">
-                                    Sign Up
-                                </button>
-                            </Link>
+                        <div className="flex flex-col gap-7 pt-3">
+                            {!user && <div>
+                                <Link href="/signup">
+                                    <button className="w-full px-5 py-2 rounded-lg border border-black text-black hover:bg-black hover:text-white transition">
+                                        Sign Up
+                                    </button>
+                                </Link>
 
-                            <Link href="/login">
-                                <button className="w-full px-5 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition">
-                                    Login
-                                </button>
-                            </Link>
+                                <Link href="/login">
+                                    <button className="w-full px-5 py-2 rounded-lg bg-black text-white hover:bg-gray-800 transition">
+                                        Login
+                                    </button>
+                                </Link>
+                            </div>}
+                            {user &&
+                                <div>
+                                    <Avatar size="md">
+                                        <Avatar.Image alt="John Doe" src={user?.image} referrerPolicy="no-referrer" />
+                                        <Avatar.Fallback>JD</Avatar.Fallback>
+                                    </Avatar>
+                                    <Button onClick={handelSignOut} variant="danger">Logout</Button>
+                                </div>
+                            }
                         </div>
                     </div>
                 )}
