@@ -3,8 +3,14 @@ import { Button, Checkbox, Description, FieldError, Form, Input, Label, TextFiel
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { authClient } from '../lib/auth-client';
+import { GrGoogle } from 'react-icons/gr';
 
 const SignUpPage = () => {
+    const handelGoogleSignIn = async()=>{
+        await authClient.signIn.social({
+            provider: "google",
+        });
+    }
     const router = useRouter()
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -32,7 +38,7 @@ const SignUpPage = () => {
                     Registration</h1>
             </div>
             <div className=' flex justify-center items-center'>
-                <Form onSubmit={onSubmit} className="flex lg:w-96 sm:w-60 flex-col gap-15 " >
+                <Form onSubmit={onSubmit} className="flex lg:w-96 sm:w-60 flex-col gap-8 " >
                     <TextField
                         isRequired
                         name="name"
@@ -102,6 +108,10 @@ const SignUpPage = () => {
                         <Button type="reset" variant="secondary">
                             Reset
                         </Button>
+                    </div>
+                    <p className='text-center font-semibold'>Or</p>
+                    <div className='flex justify-center items-center'>
+                        <Button onClick={handelGoogleSignIn} variant='outline'><GrGoogle></GrGoogle>Sign in With Google </Button>
                     </div>
                 </Form>
             </div>

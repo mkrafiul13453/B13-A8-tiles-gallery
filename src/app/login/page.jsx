@@ -2,23 +2,29 @@
 import { Button, Checkbox, Description, FieldError, Form, Input, Label, TextField } from '@heroui/react';
 import { div } from 'framer-motion/client';
 import { authClient } from '../lib/auth-client';
+import { GrGoogle } from 'react-icons/gr';
 
 const LogInPage = () => {
-        const onSubmit = async (e) => {
-            e.preventDefault();
-            // const name = e.target.name.value;
-            const email = e.target.email.value;
-            // const image = e.target.image.value;
-            const password = e.target.password.value;
-            const { data, error } = await authClient.signIn.email({
-                email, // user email address
-                password, // user password -> min 8 characters by default
-                callbackURL:"/"
-            })
-            alert("You Login Successfully ............");
-            console.log({ data, error });
+    const handelGoogleSignIn = async () => {
+        await authClient.signIn.social({
+            provider: "google",
+        });
+    }
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        // const name = e.target.name.value;
+        const email = e.target.email.value;
+        // const image = e.target.image.value;
+        const password = e.target.password.value;
+        const { data, error } = await authClient.signIn.email({
+            email, // user email address
+            password, // user password -> min 8 characters by default
+            callbackURL: "/"
+        })
+        alert("You Login Successfully ............");
+        console.log({ data, error });
 
-        };
+    };
     return (
         <div>
             <div>
@@ -26,7 +32,7 @@ const LogInPage = () => {
                     Login</h1>
             </div>
             <div className=' flex justify-center items-center'>
-                <Form onSubmit={onSubmit} className="flex lg:w-96 sm:w-60 h-96 flex-col gap-15 " >
+                <Form onSubmit={onSubmit} className="flex lg:w-96 sm:w-60 h-96 flex-col gap-6 " >
                     <TextField
                         isRequired
                         name="email"
@@ -73,6 +79,10 @@ const LogInPage = () => {
                         <Button type="reset" variant="secondary">
                             Reset
                         </Button>
+                    </div>
+                    <p className='text-center font-semibold'>Or</p>
+                    <div className='flex justify-center items-center'>
+                        <Button onClick={handelGoogleSignIn} variant='outline'><GrGoogle></GrGoogle>Sign in With Google </Button>
                     </div>
                 </Form>
             </div>
