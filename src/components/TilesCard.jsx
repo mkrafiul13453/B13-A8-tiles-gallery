@@ -7,6 +7,7 @@ import {
 } from "@heroui/react";
 
 import Image from "next/image";
+import Link from "next/link";
 import { FaEye } from "react-icons/fa";
 
 const TilesCard = ({ tile }) => {
@@ -53,14 +54,14 @@ const TilesCard = ({ tile }) => {
                     </p>
                 </div>
 
-                <Button
+                <Link href={`/all-tiles/${tile.id}`}> <Button
                     color="primary"
                     variant="outline"
                     className="w-full font-medium"
                     startContent={<FaEye />}
                 >
                     View Details
-                </Button>
+                </Button></Link>
             </CardFooter>
         </Card>
     );

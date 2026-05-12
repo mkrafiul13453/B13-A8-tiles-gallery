@@ -1,8 +1,30 @@
 "use client";
 import { Button, Checkbox, Description, FieldError, Form, Input, Label, TextField } from '@heroui/react';
+import { useRouter } from 'next/navigation';
 import React from 'react';
+import { authClient } from '../lib/auth-client';
 
 const SignUpPage = () => {
+    const router = useRouter()
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const name = e.target.name.value;
+        const email = e.target.email.value;
+        const image = e.target.image.value;
+        const password = e.target.password.value;
+        const { data, error } = await authClient.signUp.email({
+            email, // user email address
+            password, // user password -> min 8 characters by default
+            name, // user display name
+            image, // User image URL (optional)
+        })
+        console.log({ data, error });
+
+        if (!error) {
+            alert("You Register Successfully ............");
+            router.push("/");
+        }
+    };
     return (
         <div>
             <div>
@@ -10,7 +32,7 @@ const SignUpPage = () => {
                     Registration</h1>
             </div>
             <div className=' flex justify-center items-center'>
-                <Form className="flex lg:w-96 sm:w-60 flex-col gap-15 " >
+                <Form onSubmit={onSubmit} className="flex lg:w-96 sm:w-60 flex-col gap-15 " >
                     <TextField
                         isRequired
                         name="name"
